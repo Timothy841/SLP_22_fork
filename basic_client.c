@@ -17,8 +17,6 @@ int main() {
 		if (strcmp(line, "exit1") == 0){
 			exit(0);
 		}
-		len = strlen(line) + 1;
-		write(to_server, &len, sizeof(int));
 		write(to_server, line, 100);
 		read(from_server, line, 100);
 		printf("Output: %s\n", line);

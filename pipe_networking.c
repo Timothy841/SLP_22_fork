@@ -8,15 +8,18 @@
   Sets *to_client to the file descriptor to the downstream pipe.
   returns the file descriptor for the upstream pipe.
   =========================*/
-int server_handshake(int *to_client) {
+int server_handshake(int *to_client, int *parent) {
   char line[100];
   char pipe[100];
   mkfifo(WKP, 0644);//create WKP
   int from_client = open(WKP, O_RDONLY);//blocks
   read(from_client, line, 100);//get private pipe from client
-  int parent = fork();
-  
-  remove(WKP);
+  *parent = fork();
+  if (*parent){
+    remove(WKP);
+    close(from_client);
+    return 0;
+  }
   sscanf(line, "%s\n", line);
   strcpy(pipe, line);
   mkfifo(line, 0644);

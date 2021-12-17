@@ -12,16 +12,16 @@ int main() {
 
 	int to_client;
 	int from_client;
-	int len;
+	int parent;
 	char line[100];
 
 	while (1){
-		from_client = server_handshake( &to_client );
-		while (1){
-      if (read(from_client, &len, sizeof(int)) == 0){
-				break;
-			}
-			read(from_client, line, 100);
+		from_client = server_handshake( &to_client, &parent );
+		if (parent){
+			parent = 0;
+			continue;
+		}
+		while (read(from_client, line, 100)){
 			if (strcmp(line, "exit1") == 0){
 				break;
 			}
