@@ -26,9 +26,9 @@ int server_handshake(int *to_client, int *parent) {
   *to_client = open(line, O_WRONLY);
   strcat(line, "1");
   write(*to_client, line, 100);
-  remove(pipe);
   read(from_client, line, 100);
   if (strcmp(line, strcat(pipe, "12"))){
+    printf("%s, %s\n", pipe, line);
     printf("Connection unsecure.\n");
     exit(0);
   }
@@ -56,6 +56,7 @@ int client_handshake(int *to_server) {
   mkfifo(pipe, 0644);//makes private pipe
   int from_server = open(pipe, O_RDONLY);//block on private pipe
   read(from_server, line, 100);
+  remove(pipe);
   sscanf(line, "%s\n", line);
   if (strcmp(line, strcat(pipe, "1"))){
     printf("Connection unsecure.\n");

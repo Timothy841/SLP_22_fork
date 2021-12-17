@@ -28,5 +28,6 @@ int main() {
 			change(line);
 			write(to_client, line, 100);
 		}
+		return 0;
 	}
 }
